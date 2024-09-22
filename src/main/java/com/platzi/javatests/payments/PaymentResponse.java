@@ -1,6 +1,6 @@
 package com.platzi.javatests.payments;
 
-public class PaymenteResponse {
+public class PaymentResponse {
 
     enum PaymentStatus {
         OK, ERROR
@@ -8,7 +8,7 @@ public class PaymenteResponse {
 
     private PaymentStatus status;
 
-    public PaymenteResponse(PaymentStatus status) {
+    public PaymentResponse(PaymentStatus status) {
         this.status = status;
     }
 
