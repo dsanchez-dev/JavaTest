@@ -85,6 +85,12 @@ public class MovieRepositoryIntegrationTest {
         )));
     }
 
+    @Test
+    public void search_movie_by_attributes() {
+        Collection<Movie> movies = movieRepository.findByAttributes("Dark Knight", "Christopher Nolan", Genre.ACTION);
+        assertThat(movies, is(Arrays.asList(new Movie(1, "Dark Knight", 152, Genre.ACTION, "Christopher Nolan"))));
+    }
+
     @After
     public void tearDown() throws Exception {
         final Statement s = dataSource.getConnection().createStatement();

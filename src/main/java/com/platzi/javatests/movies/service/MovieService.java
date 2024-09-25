@@ -32,4 +32,8 @@ public class MovieService {
     public Collection<Movie> findMoviesByDirector(String director) {
         return movieRepository.findByDirector(director);
     }
+
+    public Collection<Movie> findMoviesByAttributes(String name, String director, Genre genre) {
+        return movieRepository.findByAttributes(name, director, genre);
+    }
 }
