@@ -28,13 +28,9 @@ public class MovieRepositoryIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-         dataSource =
-                new DriverManagerDataSource("jdbc:h2:mem:test;MODE=MYSQL", "sa", "sa");
-
+        dataSource = new DriverManagerDataSource("jdbc:h2:mem:test;MODE=MYSQL", "sa", "sa");
         ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("sql-scripts/test-data.sql"));
-
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
         movieRepository = new MovieRepositoryJdbc(jdbcTemplate);
     }
 
@@ -46,7 +42,8 @@ public class MovieRepositoryIntegrationTest {
         assertThat(movies, is(Arrays.asList(
                 new Movie(1, "Dark Knight", 152, Genre.ACTION),
                 new Movie(2, "Memento", 113, Genre.THRILLER),
-                new Movie(3,"Matrix", 136, Genre.ACTION)
+                new Movie(3,"Matrix", 136, Genre.ACTION),
+                new Movie(4, "Super 8", 112, Genre.THRILLER)
         )));
     }
 
@@ -62,6 +59,19 @@ public class MovieRepositoryIntegrationTest {
         movieRepository.saveOrUpdate(movie);
         Movie movieFromDb = movieRepository.findById(4);
         assertThat(movieFromDb, is(new Movie(4, "Super 8", 112, Genre.THRILLER)));
+    }
+
+    @Test
+    public void load_movies_by_name(){
+        Collection<Movie> movies = movieRepository.findByNameContainsIgnoreCase("dark");
+        assertThat(movies, is(Arrays.asList(new Movie(1, "Dark Knight", 152, Genre.ACTION))));
+    }
+
+    @Test
+    public void search_movie_by_name_case_insensitive(){
+        Collection<Movie> movies = movieRepository.findByNameContainsIgnoreCase("super");
+        assertThat(movies, is(Arrays.asList(new Movie(4, "Super 8", 112, Genre.THRILLER))));
+
     }
 
     //Después de cada test, se ejecuta este método que borra la base de datos para que no haya problemas con los tests, ya que se está usando una base de datos en memoria

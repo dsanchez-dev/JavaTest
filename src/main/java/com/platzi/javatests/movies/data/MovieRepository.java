@@ -9,5 +9,6 @@ public interface MovieRepository {
     Movie findById(long id);
     Collection<Movie> findAll();
     Void saveOrUpdate(Movie movie);
+    Collection<Movie> findByNameContainsIgnoreCase(String name);
 
 }

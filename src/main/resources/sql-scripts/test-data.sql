@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS movies(
     genre VARCHAR(50) NOT NULL
     );
 
-insert into movies(name, minutes, genre) values
-     ('Dark Knight', 152, 'ACTION'),
-     ('Memento', 113, 'THRILLER'),
-     ('Matrix', 136, 'ACTION');
+INSERT INTO movies (id, name, minutes, genre) VALUES (1, 'Dark Knight', 152, 'ACTION');
+INSERT INTO movies (id, name, minutes, genre) VALUES (2, 'Memento', 113, 'THRILLER');
+INSERT INTO movies (id, name, minutes, genre) VALUES (3, 'Matrix', 136, 'ACTION');
+INSERT INTO movies (id, name, minutes, genre) VALUES (4, 'Super 8', 112, 'THRILLER');
