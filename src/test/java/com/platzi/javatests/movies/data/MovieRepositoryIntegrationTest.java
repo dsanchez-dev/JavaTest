@@ -40,44 +40,53 @@ public class MovieRepositoryIntegrationTest {
         Collection<Movie> movies = movieRepository.findAll();
 
         assertThat(movies, is(Arrays.asList(
-                new Movie(1, "Dark Knight", 152, Genre.ACTION),
-                new Movie(2, "Memento", 113, Genre.THRILLER),
-                new Movie(3,"Matrix", 136, Genre.ACTION),
-                new Movie(4, "Super 8", 112, Genre.THRILLER)
+                new Movie(1, "Dark Knight", 152, Genre.ACTION, "Christopher Nolan"),
+                new Movie(2, "Memento", 113, Genre.THRILLER, "Christopher Nolan"),
+                new Movie(3, "Matrix", 136, Genre.ACTION, "Lana Wachowski"),
+                new Movie(4, "Super 8", 112, Genre.THRILLER, "J.J. Abrams"),
+                new Movie(5, "Inception", 148, Genre.ACTION, "Christopher Nolan")
+
         )));
     }
 
     @Test
-    public void load_movie_by_id(){
-    Movie movie = movieRepository.findById(2);
-    assertThat(movie, is(new Movie(2, "Memento", 113, Genre.THRILLER)));
+    public void load_movie_by_id() {
+        Movie movie = movieRepository.findById(2);
+        assertThat(movie, is(new Movie(2, "Memento", 113, Genre.THRILLER, "Christopher Nolan")));
     }
 
     @Test
-    public void insert_a_movie(){
-        Movie movie = new Movie("Super 8", 112, Genre.THRILLER);
+    public void insert_a_movie() {
+        Movie movie = new Movie(5, "Inception", 148, Genre.ACTION, "Christopher Nolan");
         movieRepository.saveOrUpdate(movie);
-        Movie movieFromDb = movieRepository.findById(4);
-        assertThat(movieFromDb, is(new Movie(4, "Super 8", 112, Genre.THRILLER)));
+        Movie movieFromDb = movieRepository.findById(5);
+        assertThat(movieFromDb, is(new Movie(5, "Inception", 148, Genre.ACTION, "Christopher Nolan")));
     }
 
     @Test
-    public void load_movies_by_name(){
+    public void load_movies_by_name() {
         Collection<Movie> movies = movieRepository.findByNameContainsIgnoreCase("dark");
-        assertThat(movies, is(Arrays.asList(new Movie(1, "Dark Knight", 152, Genre.ACTION))));
+        assertThat(movies, is(Arrays.asList(new Movie(1, "Dark Knight", 152, Genre.ACTION, "Christopher Nolan"))));
     }
 
     @Test
-    public void search_movie_by_name_case_insensitive(){
+    public void search_movie_by_name_case_insensitive() {
         Collection<Movie> movies = movieRepository.findByNameContainsIgnoreCase("super");
-        assertThat(movies, is(Arrays.asList(new Movie(4, "Super 8", 112, Genre.THRILLER))));
-
+        assertThat(movies, is(Arrays.asList(new Movie(4, "Super 8", 112, Genre.THRILLER, "J.J. Abrams"))));
     }
 
-    //Después de cada test, se ejecuta este método que borra la base de datos para que no haya problemas con los tests, ya que se está usando una base de datos en memoria
+    @Test
+    public void search_movie_by_director() {
+        Collection<Movie> movies = movieRepository.findByDirector("Christopher Nolan");
+        assertThat(movies, is(Arrays.asList(
+                new Movie(1, "Dark Knight", 152, Genre.ACTION, "Christopher Nolan"),
+                new Movie(2, "Memento", 113, Genre.THRILLER, "Christopher Nolan"),
+                new Movie(5, "Inception", 148, Genre.ACTION, "Christopher Nolan")
+        )));
+    }
+
     @After
     public void tearDown() throws Exception {
-        //Remove H2 files
         final Statement s = dataSource.getConnection().createStatement();
         s.execute("drop all objects delete files");
     }

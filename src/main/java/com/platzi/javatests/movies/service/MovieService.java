@@ -28,4 +28,8 @@ public class MovieService {
     public Collection<Movie> findMoviesByName(String name) {
         return movieRepository.findByNameContainsIgnoreCase(name);
     }
+
+    public Collection<Movie> findMoviesByDirector(String director) {
+        return movieRepository.findByDirector(director);
+    }
 }

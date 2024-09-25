@@ -10,5 +10,6 @@ public interface MovieRepository {
     Collection<Movie> findAll();
     Void saveOrUpdate(Movie movie);
     Collection<Movie> findByNameContainsIgnoreCase(String name);
+    Collection<Movie> findByDirector(String director);
 
 }
